@@ -7,7 +7,7 @@ typedef struct bnode {
     bnode * left, * right;
     bnode(int data){
         this->data = data;
-        this->left = this->right = '\0';
+        this->left = this->right = NULL;
     }
 }* bptr;
 
@@ -24,11 +24,22 @@ void insert( bptr & T, int data) {
 
 void TopView(bptr root, map<int,int> & m, int value) {
     if(!root) return;
-    m.insert(pair<int, int>(root->data, value));
+    m.insert(pair<int, int>(value, root->data));
     TopView(root->left, m, value-1);
     TopView(root->right, m, value+1);
 }
-
+/*
+ *               9
+ *             /  \
+ *            5    15
+ *          /  \  / 
+ *         2    6 12  
+ *               /
+ *              10
+ *
+ *  Top View: 2 5 9 15
+ *
+ */
 int main () {
     bptr root=NULL;
     map<int,int> m;
@@ -42,8 +53,9 @@ int main () {
 
     TopView(root, m, 0);
     map<int, int>::iterator it;
+    cout << "Top View of Tree\n\n";
     for(it = m.begin(); it != m.end(); it++) {
-        cout << " " << it->first;
+        cout << " " << it->second;
     }
     return 0;
 }

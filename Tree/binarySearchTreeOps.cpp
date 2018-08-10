@@ -6,7 +6,7 @@ typedef struct bnode {
     bnode * left, * right;
     bnode(int data){
         this->data = data;
-        this->left = this->right = '\0';
+        this->left = this->right = NULL;
     }
 }* bptr;
 

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <map>
+#include <list>
+
 using namespace std;
 
 typedef struct bnode {
@@ -7,7 +9,7 @@ typedef struct bnode {
     bnode * left, * right;
     bnode(int data){
         this->data = data;
-        this->left = this->right = '\0';
+        this->left = this->right = NULL;
     }
 }* bptr;
 
@@ -22,14 +24,37 @@ void insert( bptr & T, int data) {
         insert(T->right, data);
 }
 
-void verticalorder(bptr root, map<int, vector<int> > &m, int value) {
+void VerticalOrder(bptr root, map<int,list<int> > & m, int value) {
     if(!root) return;
-    m.insert(value, )
+    map<int, list<int> >::iterator it = m.find(value);
+    if (it == m.end()) {
+        list<int> l;
+        l.push_back(root->data);
+        m.insert(pair<int, list<int> >(value, l));
+    } else {
+        it->second.push_back(root->data);
+    }
+    VerticalOrder(root->left, m, value-1);
+    VerticalOrder(root->right, m, value+1);
 }
-
+/*
+ *               9
+ *             /  \
+ *            5    15
+ *          /  \  / 
+ *         2    6 12  
+ *               /
+ *              10
+ *
+ *  Vertical Order:
+ *  2
+ *  5 10
+ *  9 6 12
+ *  15
+ */
 int main () {
     bptr root=NULL;
-
+    map<int, list<int> > m;
     insert(root, 9);
     insert(root, 5);
     insert(root, 15);
@@ -38,6 +63,14 @@ int main () {
     insert(root, 10);
     insert(root, 2);
 
+    VerticalOrder(root, m, 0);
 
+    cout << "Vertical Order from left to right \n\n";
+    for(map<int, list<int> >::iterator it = m.begin(); it != m.end(); it++) {
+        for (list<int>::iterator lit = it->second.begin(); lit != it->second.end(); ++lit) {
+            cout << *lit << " ";
+        }
+        cout << "\n";
+    }
     return 0;
 }

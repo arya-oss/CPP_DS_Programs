@@ -1,10 +1,10 @@
 /**
- * Depth first traversal of a graph
+ * Breadth first traversal of a graph
  *
  */
 #include <iostream>
 #include <list>
-#include <stack>
+#include <queue>
 
 using namespace std;
 
@@ -20,8 +20,8 @@ public:
         adj[src].push_back(dest);
     }
 
-    void dfs(int start) {
-        stack<int> s;
+    void bfs(int start) {
+        queue<int> s;
         bool visited[V];
         for (int i=0; i < V; i++) {
             visited[i] = false;
@@ -29,7 +29,7 @@ public:
         s.push(start);
         visited[start] = true;
         while(!s.empty()) {
-            int st = s.top();
+            int st = s.front();
             s.pop();
             cout << st << " ";
             for (list<int>::iterator it = adj[st].begin(); it != adj[st].end(); it++) {
@@ -51,7 +51,7 @@ int main (int argc, char const * argv[]) {
     graph->addEdge(2, 4);
     graph->addEdge(4, 3);
     
-    graph->dfs(0);
+    graph->bfs(0);
 
     return 0;
 }
